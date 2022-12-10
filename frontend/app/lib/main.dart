@@ -1,4 +1,5 @@
 import 'package:app/resultPage.dart';
+import 'package:app/testChart.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mlkit_commons/google_mlkit_commons.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
+
   final String title;
 
   @override
@@ -47,17 +49,27 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _switchPage() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => const ResultPage()));
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const ResultPage()));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("App Navn"), centerTitle: true,),
-      body: Container(
-        child: ElevatedButton(
-          child: Text("Search"),
-          onPressed: _findtext,
+      appBar: AppBar(
+        title: Text("App Navn"),
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ElevatedButton(
+              child: Text("Search"),
+              onPressed: _findtext,
+            ),
+            SizedBox(height: 300, child: TestChart.withSampleData()),
+          ],
         ),
       ),
     );
