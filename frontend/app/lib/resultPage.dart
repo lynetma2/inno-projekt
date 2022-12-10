@@ -19,7 +19,7 @@ class _ResultPageState extends State<ResultPage> {
         appBar: AppBar(title: const Text("App Navn"), centerTitle: true,),
         body: Column(
           children: [
-            productWidget("Flügger Facade Beton - Betonmaling", "https://assets.flugger.dk/static/ir/789878/24408_Facade%20Beton_07_0,75L_FACADE%20BET%20(1).png?width=500&quality=80&format=webp&rmode=Pad", 1, 60),
+            productWidgetNy("Flügger Facade Beton - Betonmaling", "https://assets.flugger.dk/static/ir/789878/24408_Facade%20Beton_07_0,75L_FACADE%20BET%20(1).png?width=500&quality=80&format=webp&rmode=Pad", 1, 60),
             Card(
               child: ListView.builder(
                 padding: const EdgeInsets.all(8),
@@ -59,28 +59,39 @@ Widget productWidget(String productName, String imgUrl, int dryTime, int relativ
   );
 }
 
+Widget productWidgetNy(String productName, String imgUrl, int dryTime, int relativeHumidity) {
+  return
+    Card(
+      child: ListTile(
+        title: Text(productName),
+        subtitle: Text("Tørretid: $dryTime\n Fugt < $relativeHumidity"),
+        trailing: Image.network(imgUrl),
+      ),
+    );
+}
+
 Widget dateWidget(DateInfo date) {
-  return Padding(
-    padding: const EdgeInsets.all(8.0),
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Row(
-          children: [
-            Text(date.weekDay, style: const TextStyle(fontSize: 18),),
-            Spacer(),
-            Text(date.approvedTime, style: const TextStyle(fontSize: 18),),
-          ],
-        ),
-        Row(
-          children: [
-            Text("fugt < ${date.relativeHumidity}", style: const TextStyle(fontSize: 18),),
-            Spacer(),
-            date.reasoningIcon,
-          ],
-        )
-      ],
-    ),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            children: [
+              Text(date.weekDay, style: const TextStyle(fontSize: 18),),
+              Spacer(),
+              Text(date.approvedTime, style: const TextStyle(fontSize: 18),),
+            ],
+          ),
+          Row(
+            children: [
+              Text("fugt < ${date.relativeHumidity}", style: const TextStyle(fontSize: 18),),
+              Spacer(),
+              date.reasoningIcon,
+            ],
+          )
+        ],
+      ),
   );
 }
 
@@ -92,3 +103,5 @@ class DateInfo {
 
   DateInfo(this.weekDay, this.approvedTime, this.relativeHumidity, this.reasoningIcon);
 }
+
+
