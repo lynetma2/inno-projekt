@@ -1,0 +1,19 @@
+services:
+    server:
+        build: ./server
+        ports:
+            - "80:80" # map server:80 to host:80 
+        depends_on:
+            database:
+                condition: service_healthy #TODO implement healthcheck
+            scraper:
+                condition: service_completed_successfully
+    database:
+        build: ./db
+        #ports:
+            #- "5432:5432" # map database:5432 to host:5432
+    scraper:
+        build: ./scraper
+        depends_on:
+            database:
+                condition: service_healthy
