@@ -1,7 +1,7 @@
 #!/bin/bash
 psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-EOSQL
     CREATE TABLE APIKeys (Key char(30) UNIQUE NOT NULL, UseCount integer NOT NULL);
-    CREATE TYPE dryTime as (
+    CREATE TYPE dryTime AS (
         Temperature  real,
         humidity     real,
         time         interval
