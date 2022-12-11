@@ -23,11 +23,17 @@ class FluggerSpider(scrapy.Spider):
         haerde = response.css('#content > div.layout__content > div.pdp-page > div:nth-child(2) > section > div > div.row.information-section__row > div.col-xs-12.col-md-5.col-md-offset-1 > div > div:nth-child(1) > div.data-display__text > ul > li:nth-child(3) > span::text').get()
         img = response.css('#content > div.layout__content > div.pdp-page > div.image-price-section > div > div > div:nth-child(1) > div > picture > source::attr(data-srcset)').get()
 
+        #Cleaning fields
+        stovtor = stovtor[stovtor.index(":") +1:]
+        gentor = gentor[gentor.index(":") +1:]
+        haerde = haerde[haerde.index(":") +1:]
+
         yield {
             'navn' : navn,
             'varenummer' : varenummer,
             'img' : img,
             'støvtør' : stovtor,
             'Genbehandlingstør' : gentor,
-            'Gennemhærdet' : haerde
+            'Gennemhærdet' : haerde,
+            'url' : response.request.url,
         }
