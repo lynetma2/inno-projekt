@@ -1,4 +1,5 @@
 import scrapy
+import re
 
 class FluggerSpider(scrapy.Spider):
     name = "flugger"
@@ -23,10 +24,20 @@ class FluggerSpider(scrapy.Spider):
         haerde = response.css('#content > div.layout__content > div.pdp-page > div:nth-child(2) > section > div > div.row.information-section__row > div.col-xs-12.col-md-5.col-md-offset-1 > div > div:nth-child(1) > div.data-display__text > ul > li:nth-child(3) > span::text').get()
         img = response.css('#content > div.layout__content > div.pdp-page > div.image-price-section > div > div > div:nth-child(1) > div > picture > source::attr(data-srcset)').get()
 
+        def clean_number(text):
+            time = re.findall(r'\d+', text)
+            if ("time" in text.lower()):
+                return int(time[0])
+            elif ("døgn" in text.lower()):
+                return int(time[0]) * 24 
+
         #Cleaning fields
         stovtor = stovtor[stovtor.index(":") +1:]
+        stovtor = clean_number(stovtor)
         gentor = gentor[gentor.index(":") +1:]
+        gentor = clean_number(gentor)
         haerde = haerde[haerde.index(":") +1:]
+        haerde = clean_number(haerde)
 
         yield {
             'navn' : navn,
