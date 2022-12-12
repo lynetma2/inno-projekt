@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ResultPage extends StatefulWidget {
   const ResultPage({Key? key}) : super(key: key);
@@ -60,35 +61,63 @@ class _ResultPageState extends State<ResultPage> {
   }
 }
 
-Widget productWidgetNy(String productName, String imgUrl, int dryTime, int relativeHumidity) {
+Widget productWidgetNy(String productName, String imgUrl, int dryTime, int relativeHumidity, String webUrl  ) {
+  final Uri _url = Uri.parse('https://flutter.dev');
+
+  Future<void> _launchUrl() async {
+    debugPrint("GestureDetector tapped!");
+
+    if (!await launchUrl(_url)) {
+      throw 'Could not launch $_url';
+    }
+  }
+
   return
-    Card(
-      child: ListTile(
-        title: Text(productName),
-        subtitle: Text("Tørretid: $dryTime\n Fugt < $relativeHumidity"),
-        trailing: Image.network(imgUrl),
+    InkWell(
+      onTap: _launchUrl,
+      child: Card(
+        child: ListTile(
+          title: Text(productName),
+          subtitle: Text("Tørretid: $dryTime\n Fugt < $relativeHumidity"),
+          trailing: Image.network(imgUrl),
+        ),
       ),
     );
+
+
 }
 
 Widget productWidget(String productName, String imgUrl, int dryTime, int relativeHumidity) {
+  final Uri _url = Uri.parse('https://flutter.dev');
+
+  Future<void> _launchUrl() async {
+    debugPrint("GestureDetector tapped!");
+
+    if (!await launchUrl(_url)) {
+      throw 'Could not launch $_url';
+    }
+  }
+
   return
-    Card(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            Text(productName, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
-            Row(
-              children: [
-                Column(
-                  children: [Text("Tørretid: ${dryTime}T", style: const TextStyle(fontSize: 16),), Text("RF værdi: $relativeHumidity", style: const TextStyle(fontSize: 16),)],
-                ),
-                Spacer(),
-                Image.network(imgUrl, height: 150,),
-              ],
-            ),
-          ],
+    InkWell(
+      onTap: _launchUrl,
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              Text(productName, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
+              Row(
+                children: [
+                  Column(
+                    children: [Text("Tørretid: ${dryTime}T", style: const TextStyle(fontSize: 16),), Text("RF værdi: $relativeHumidity", style: const TextStyle(fontSize: 16),)],
+                  ),
+                  Spacer(),
+                  Image.network(imgUrl, height: 150,),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
