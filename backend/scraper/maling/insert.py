@@ -3,8 +3,10 @@ import json
 import os
 import sys
 
+#precondition $POSTGRES_PASSWORD is the password for the database
+#TODO set host
 def main():
-    conn = pg.connect(dbname='postgres', host='localhost',\
+    conn = pg.connect(dbname='postgres', host='database',\
             user='postgres', password=os.environ['POSTGRES_PASSWORD'])
     with conn.cursor() as cur:
         data = json.load(sys.stdin)

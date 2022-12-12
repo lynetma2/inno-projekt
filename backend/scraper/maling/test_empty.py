@@ -2,7 +2,7 @@ import psycopg2 as pg
 import os
 import sys
 def main():
-    conn = pg.connect(dbname='postgres', host='localhost',\
+    conn = pg.connect(dbname='postgres', host='database',\
             user='postgres', password=os.environ['POSTGRES_PASSWORD'])
     with conn.cursor() as cur:
         # if table Paints is empty
