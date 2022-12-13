@@ -8,11 +8,11 @@ def main():
         # if table Paints is empty
         cur.execute('SELECT COUNT(*) FROM Paints;')
         if cur.fetchone()[0] != 0:
-            print("Table Paints is non-empty. Returning")
+            print("Table Paints is non-empty. Returning.")
             conn.close()
             sys.exit(1) # Paints is non-empty
         else:
-            print("Table Paints is empty. Updating table")
+            print("Table Paints is empty. Updating table.")
             conn.close
             sys.exit(0) # Paints is empty
 if __name__ == "__main__":
