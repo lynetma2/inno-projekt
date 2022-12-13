@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'main.dart';
+
 class ResultPage extends StatefulWidget {
-  const ResultPage({Key? key}) : super(key: key);
+  const ResultPage({Key? key, required this.id}) : super(key: key);
+
+  final String id;
 
   @override
   State<ResultPage> createState() => _ResultPageState();
@@ -150,12 +154,7 @@ class _ResultPageState extends State<ResultPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            productWidget(
-                "Flügger Facade Beton - Betonmaling",
-                "https://assets.flugger.dk/static/ir/789878/24408_Facade%20Beton_07_0,75L_FACADE%20BET%20(1).png?width=500&quality=80&format=webp&rmode=Pad",
-                1,
-                60,
-                7.3),
+            _productWidget(PaintProduct.fromTestData()),
             Card(
               child: ListView.separated(
                 physics: NeverScrollableScrollPhysics(),
@@ -180,10 +179,8 @@ class _ResultPageState extends State<ResultPage> {
   }
 }
 
-Widget productWidget(
-    String productName, String imgUrl, int dryTime, int relativeHumidity, double minTemp) {
-  final Uri _url = Uri.parse(
-      'https://www.flugger.dk/udendoers/sokkelmaling/facade-beton/p-FACADE%20BET/?variantId=74967');
+Widget _productWidget(PaintProduct paint) {
+  final Uri _url = Uri.parse(paint.url);
 
   Future<void> _launchUrl() async {
     if (!await launchUrl(_url)) {
@@ -199,7 +196,7 @@ Widget productWidget(
         child: Column(
           children: [
             Text(
-              productName,
+              paint.name,
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             Row(
@@ -207,31 +204,27 @@ Widget productWidget(
                 Column(
                   children: [
                     Text(
-                      "Støvtør: ${dryTime} time(r)",
+                      "Støvtør: ${paint.surfacedry} time(r)",
                       style: const TextStyle(fontSize: 16),
                     ),
                     Text(
-                      "Genbehandlingstør: ${dryTime * 6} time(r)",
+                      "Genbehandlingstør: ${paint.recoatdry} time(r)",
                       style: const TextStyle(fontSize: 16),
                     ),
                     Text(
-                      "Gennemhærdet: ${dryTime * 28} døgn",
+                      "Gennemhærdet: ${(paint.curingtime / 24).round()} døgn",
                       style: const TextStyle(fontSize: 16),
                     ),
-                    Text(
-                      "Minimum temperatur: ${minTemp}\u2103",
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                    Text(
-                      "Tallene er ca. og ved 20\u2103 og en RF på 60%\nAlt ansvar fralægges.",
-                      style: const TextStyle(fontSize: 11),
+                    const Text(
+                      "Tiderne er ca. ved 20\u2103 og RF: 60%\nAlt ansvar fralægges.",
+                      style: TextStyle(fontSize: 11),
                     ),
                   ],
                 ),
-                Spacer(),
+                const Spacer(),
                 Image.network(
-                  imgUrl,
-                  height: 150,
+                  paint.imgurl,
+                  height: 120,
                 ),
               ],
             ),
