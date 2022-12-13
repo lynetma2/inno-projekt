@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:http/http.dart' as http;
 
 import 'main.dart';
 
@@ -13,6 +16,8 @@ class ResultPage extends StatefulWidget {
 }
 
 class _ResultPageState extends State<ResultPage> {
+  late Future<PaintProduct> futurePaintProduct;
+
   final List<DateInfo> entries = <DateInfo>[
     DateInfo(
         "Mandag",
@@ -141,7 +146,38 @@ class _ResultPageState extends State<ResultPage> {
           RelativeHumidity(22, 0.50, 15.3, Icons.wb_sunny),
         ]),
   ];
-  final List<bool> expansionStuff = [false, false, false, false, false, false, false];
+  final List<bool> expansionStuff = [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ];
+
+  Future<PaintProduct> fetchPaint(String id) async {
+    //TODO update the URL
+    final response = await http
+        .get(Uri.parse('https://jsonplaceholder.typicode.com/albums/1'));
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      //TODO change this to the actual data
+      return PaintProduct.fromTestData();
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load product');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    futurePaintProduct = fetchPaint(widget.id);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -154,7 +190,17 @@ class _ResultPageState extends State<ResultPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            _productWidget(PaintProduct.fromTestData()),
+            FutureBuilder(
+                future: futurePaintProduct,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return _productWidget(snapshot.data!);
+                  } else if (snapshot.hasError) {
+                    return const Text("An error occured");
+                  }
+
+                  return const CircularProgressIndicator();
+                }),
             Card(
               child: ListView.separated(
                 physics: NeverScrollableScrollPhysics(),
