@@ -17,144 +17,7 @@ class ResultPage extends StatefulWidget {
 
 class _ResultPageState extends State<ResultPage> {
   late Future<PaintProduct> futurePaintProduct;
-
-  final List<DateInfo> entries = <DateInfo>[
-    DateInfo(
-        "Mandag",
-        "08-17",
-        60,
-        const Icon(
-          Icons.check_circle_outline,
-          color: Colors.green,
-        ),
-        [
-          RelativeHumidity(8, 0.40, 22.3, Icons.cloud),
-          RelativeHumidity(10, 0.45, 22.3, Icons.wb_sunny),
-          RelativeHumidity(12, 0.80, 21.3, Icons.water_drop),
-          RelativeHumidity(14, 0.75, 24.3, Icons.water_drop),
-          RelativeHumidity(16, 0.55, 25.2, Icons.cloud),
-          RelativeHumidity(18, 0.45, 12.3, Icons.wb_sunny),
-          RelativeHumidity(20, 0.40, 14.3, Icons.wb_sunny),
-          RelativeHumidity(22, 0.50, 15.3, Icons.wb_sunny),
-        ]),
-    DateInfo(
-        "Tirsdag",
-        "11-13",
-        60,
-        const Icon(
-          Icons.error_outline,
-          color: Colors.red,
-        ),
-        [
-          RelativeHumidity(8, 0.40, 22.3, Icons.cloud),
-          RelativeHumidity(10, 0.45, 22.3, Icons.wb_sunny),
-          RelativeHumidity(12, 0.80, 21.3, Icons.water_drop),
-          RelativeHumidity(14, 0.75, 24.3, Icons.water_drop),
-          RelativeHumidity(16, 0.55, 25.2, Icons.cloud),
-          RelativeHumidity(18, 0.45, 12.3, Icons.wb_sunny),
-          RelativeHumidity(20, 0.40, 14.3, Icons.wb_sunny),
-          RelativeHumidity(22, 0.50, 15.3, Icons.wb_sunny),
-        ]),
-    DateInfo(
-        "Onsdag",
-        "11-13",
-        60,
-        const Icon(
-          Icons.question_mark_outlined,
-          color: Colors.orange,
-        ),
-        [
-          RelativeHumidity(8, 0.40, 22.3, Icons.cloud),
-          RelativeHumidity(10, 0.45, 22.3, Icons.wb_sunny),
-          RelativeHumidity(12, 0.80, 21.3, Icons.water_drop),
-          RelativeHumidity(14, 0.75, 24.3, Icons.water_drop),
-          RelativeHumidity(16, 0.55, 25.2, Icons.cloud),
-          RelativeHumidity(18, 0.45, 12.3, Icons.wb_sunny),
-          RelativeHumidity(20, 0.40, 14.3, Icons.wb_sunny),
-          RelativeHumidity(22, 0.50, 15.3, Icons.wb_sunny),
-        ]),
-    DateInfo(
-        "Torsdag",
-        "11-13",
-        60,
-        const Icon(
-          Icons.error_outline,
-          color: Colors.red,
-        ),
-        [
-          RelativeHumidity(8, 0.40, 22.3, Icons.cloud),
-          RelativeHumidity(10, 0.45, 22.3, Icons.wb_sunny),
-          RelativeHumidity(12, 0.80, 21.3, Icons.water_drop),
-          RelativeHumidity(14, 0.75, 24.3, Icons.water_drop),
-          RelativeHumidity(16, 0.55, 25.2, Icons.cloud),
-          RelativeHumidity(18, 0.45, 12.3, Icons.wb_sunny),
-          RelativeHumidity(20, 0.40, 14.3, Icons.wb_sunny),
-          RelativeHumidity(22, 0.50, 15.3, Icons.wb_sunny),
-        ]),
-    DateInfo(
-        "Fredag",
-        "11-13",
-        60,
-        const Icon(
-          Icons.error_outline,
-          color: Colors.red,
-        ),
-        [
-          RelativeHumidity(8, 0.40, 22.3, Icons.cloud),
-          RelativeHumidity(10, 0.45, 22.3, Icons.wb_sunny),
-          RelativeHumidity(12, 0.80, 21.3, Icons.water_drop),
-          RelativeHumidity(14, 0.75, 24.3, Icons.water_drop),
-          RelativeHumidity(16, 0.55, 25.2, Icons.cloud),
-          RelativeHumidity(18, 0.45, 12.3, Icons.wb_sunny),
-          RelativeHumidity(20, 0.40, 14.3, Icons.wb_sunny),
-          RelativeHumidity(22, 0.50, 15.3, Icons.wb_sunny),
-        ]),
-    DateInfo(
-        "Lørdag",
-        "11-13",
-        60,
-        const Icon(
-          Icons.error_outline,
-          color: Colors.red,
-        ),
-        [
-          RelativeHumidity(8, 0.40, 22.3, Icons.cloud),
-          RelativeHumidity(10, 0.45, 22.3, Icons.wb_sunny),
-          RelativeHumidity(12, 0.80, 21.3, Icons.water_drop),
-          RelativeHumidity(14, 0.75, 24.3, Icons.water_drop),
-          RelativeHumidity(16, 0.55, 25.2, Icons.cloud),
-          RelativeHumidity(18, 0.45, 12.3, Icons.wb_sunny),
-          RelativeHumidity(20, 0.40, 14.3, Icons.wb_sunny),
-          RelativeHumidity(22, 0.50, 15.3, Icons.wb_sunny),
-        ]),
-    DateInfo(
-        "Søndag",
-        "11-13",
-        60,
-        const Icon(
-          Icons.error_outline,
-          color: Colors.red,
-        ),
-        [
-          RelativeHumidity(8, 0.40, 22.3, Icons.cloud),
-          RelativeHumidity(10, 0.45, 22.3, Icons.wb_sunny),
-          RelativeHumidity(12, 0.80, 21.3, Icons.water_drop),
-          RelativeHumidity(14, 0.75, 24.3, Icons.water_drop),
-          RelativeHumidity(16, 0.55, 25.2, Icons.cloud),
-          RelativeHumidity(18, 0.45, 12.3, Icons.wb_sunny),
-          RelativeHumidity(20, 0.40, 14.3, Icons.wb_sunny),
-          RelativeHumidity(22, 0.50, 15.3, Icons.wb_sunny),
-        ]),
-  ];
-  final List<bool> expansionStuff = [
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false
-  ];
+  late Future<List<DateInfo>> futureDateInfos;
 
   Future<PaintProduct> fetchPaint(String id) async {
     //TODO update the URL
@@ -172,11 +35,30 @@ class _ResultPageState extends State<ResultPage> {
       throw Exception('Failed to load product');
     }
   }
+  
+  Future<List<DateInfo>> fetchDates(String id, double latitude, double longitude) async {
+    //TODO update the URL
+    final response = await http
+        .get(Uri.parse('https://jsonplaceholder.typicode.com/albums/2'));
+    
+    if (response.statusCode == 200) {
+      debugPrint("No error");
+      return [
+        DateInfo.fromTestData(),
+        DateInfo.fromTestData(),
+        DateInfo.fromTestData()
+      ];
+    } else {
+      throw Exception('Failed to load dateinfo');
+    }
+  }
 
   @override
   void initState() {
     super.initState();
     futurePaintProduct = fetchPaint(widget.id);
+    //TODO update the coordinates
+    futureDateInfos = fetchDates(widget.id, 10.402931, 55.372364);
   }
 
   @override
@@ -201,23 +83,36 @@ class _ResultPageState extends State<ResultPage> {
 
                   return const CircularProgressIndicator();
                 }),
-            Card(
-              child: ListView.separated(
-                physics: NeverScrollableScrollPhysics(),
-                padding: const EdgeInsets.all(8),
-                itemCount: entries.length,
-                shrinkWrap: true,
-                itemBuilder: (BuildContext context, int index) {
-                  return dateWidget(entries[index], expansionStuff, index,
-                      (bool expanded) {
-                    setState(() => expansionStuff[index] = expanded);
-                  }, context);
-                },
-                separatorBuilder: (context, index) {
-                  return const Divider();
-                },
-              ),
+            FutureBuilder(
+              future: futureDateInfos,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  //Build the normal widget
+                  return Card(
+                    child: ListView.separated(
+                      physics: const NeverScrollableScrollPhysics(),
+                      padding: const EdgeInsets.all(8),
+                      itemCount: snapshot.data!.length,
+                      shrinkWrap: true,
+                      itemBuilder: (BuildContext context, int index) {
+                        return dateWidget(snapshot.data![index], index,
+                                (bool expanded) {
+                              setState(() => snapshot.data![index].expanded = expanded);
+                            }, context);
+                      },
+                      separatorBuilder: (context, index) {
+                        return const Divider();
+                      },
+                    ),
+                  );
+                } else if (snapshot.hasError) {
+                  return const Text("An error occured");
+                }
+
+                return const CircularProgressIndicator();
+              }
             ),
+
           ],
         ),
       ),
@@ -281,29 +176,29 @@ Widget _productWidget(PaintProduct paint) {
   );
 }
 
-Widget dateWidget(DateInfo date, List<bool> expansionStuff, int index,
+Widget dateWidget(DateInfo date, int index,
     onExpansionChanged, context) {
   final theme = Theme.of(context).copyWith(dividerColor: Colors.transparent);
 
   return Theme(
     data: theme,
     child: ExpansionTile(
-        title: Text(date.weekDay),
-        subtitle:
-            Text("Det anbefalede tidsrum at male i er ${date.approvedTime}"),
+        title: Text(date.time),
+        subtitle: //TODO vent på map fra kasper om tildelingen
+            const Text("Fint at male nu"),
         trailing: Wrap(
           spacing: 12, // space between two icons
           children: <Widget>[
-            date.reasoningIcon, // icon-1
-            Icon(expansionStuff[index]
+            const Icon(Icons.check_circle_outline, color: Colors.green,), // icon-1 TODO do something here again with the map
+            Icon(date.expanded
                 ? Icons.arrow_drop_up
                 : Icons.arrow_drop_down), // icon-2
           ],
         ),
+        onExpansionChanged: onExpansionChanged,
         children: [
           humidityWidget(date),
-        ],
-        onExpansionChanged: onExpansionChanged),
+        ]),
   );
 }
 
@@ -322,7 +217,7 @@ Widget humidityWidget(DateInfo data) {
     height: 120,
     child: ListView.separated(
       padding: const EdgeInsets.all(8),
-      itemCount: data.humidityList.length,
+      itemCount: data.datapoints.length +1 ,
       scrollDirection: Axis.horizontal,
       itemBuilder: (BuildContext context, int index) {
         if (index == 0) {
@@ -371,20 +266,21 @@ Widget humidityWidget(DateInfo data) {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text("${(data.humidityList[index].humidity * 100).round()}%",
+                Text("${(data.datapoints[index -1].humidity * 100).round()}%",
                     style: TextStyle(
                         color:
-                            _humidityColor(data.humidityList[index].humidity),
+                            _humidityColor(data.datapoints[index -1].humidity),
                         fontSize: 18)),
                 Text(
-                  "${data.humidityList[index].temp} \u2103",
+                  "${data.datapoints[index -1].temp} \u2103",
                   style: const TextStyle(fontSize: 18),
                 ),
                 Text(
-                  "${data.humidityList[index].time}:00",
+                  "${data.datapoints[index -1].time}:00",
                   style: const TextStyle(fontSize: 18),
                 ),
-                Icon(data.humidityList[index - 1].iconData)
+                //TODO do something about the map here again
+                const Icon(Icons.sunny)
               ],
             ),
           );
@@ -398,21 +294,35 @@ Widget humidityWidget(DateInfo data) {
 }
 
 class DateInfo {
-  String weekDay;
-  String approvedTime;
-  double minTemp;
-  Icon reasoningIcon;
-  List<RelativeHumidity> humidityList;
+  String time;
+  int judgement;
+  List<RelativeHumidity> datapoints;
+  bool expanded = false;
 
-  DateInfo(this.weekDay, this.approvedTime, this.minTemp, this.reasoningIcon,
-      this.humidityList);
+  DateInfo(this.time, this.judgement, this.datapoints);
+
+  DateInfo.fromJson(Map<String, dynamic> json)
+    : time = json['time'],
+      judgement = json['judgement'],
+      datapoints = (json['datapoints'] as List).map((e) => RelativeHumidity.fromJson(e)).toList();
+
+  factory DateInfo.fromTestData() {
+    Map<String, dynamic> dateInfoMap = jsonDecode('{"time":"2022-12-13T12:00:00Z","judgement":1,"datapoints":[{"rf":0.65,"time":"2022-12-13T12:00:00Z","temperatur":22.3,"icon":1},{"rf":0.75,"time":"2022-12-13T14:00:00Z","temperatur":21.3,"icon":1},{"rf":0.55,"time":"2022-12-13T16:00:00Z","temperatur":20.3,"icon":2}]}');
+    return DateInfo.fromJson(dateInfoMap);
+  }
 }
 
 class RelativeHumidity {
-  final int time;
+  final String time;
   final double humidity;
   final double temp;
-  final IconData iconData;
+  final int icon;
 
-  RelativeHumidity(this.time, this.humidity, this.temp, this.iconData);
+  RelativeHumidity(this.time, this.humidity, this.temp, this.icon);
+
+  RelativeHumidity.fromJson(Map<String, dynamic> json)
+    : time = json['time'],
+      humidity = json['rf'],
+      temp = json['temperatur'],
+      icon = json['icon'];
 }

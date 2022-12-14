@@ -78,14 +78,15 @@ class _MyHomePageState extends State<MyHomePage> {
     Map<String, String> paintNames = await fetchPaintNames();
     var matches = recognizedText.text.toString().bestMatch(paintNames.keys.toList());
     debugPrint(matches.toString());
-    if (matches.bestMatch.rating! >= 0.2) {
+    //if (matches.bestMatch.rating! >= 0.2) {
       setState(() {
         searching = false;
       });
-      _switchPage(paintNames[matches.bestMatch.target]!);
-    } else {
+      //_switchPage(paintNames[matches.bestMatch.target]!);
+        _switchPage("testID");
+    //} else {
       //TODO create error and allow manual search
-    }
+    //}
   }
 
   void _switchPage(String id) {
