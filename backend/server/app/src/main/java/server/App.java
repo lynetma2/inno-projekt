@@ -5,9 +5,6 @@ package server;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableAsync;
-
-import java.util.UUID;
-
 @SpringBootApplication
 @EnableAsync
 public class App {
@@ -16,15 +13,7 @@ public class App {
      * @param args
      */
     public static void main(String[] args) {
-        System.out.println("hello world");
-        //Database.getPaint(UUID.fromString("6ff3cd36-16f5-4997-a683-15c8c9adf149"));
 
         SpringApplication.run(RestServer.class, args);
-        //Database.testing();
-        //TODO Spring
-        //TODO DB access
-        //TODO YR ACCESS
     }
-
-
 }

@@ -36,7 +36,7 @@ public class Database {
             PreparedStatement p = con.prepareStatement("SELECT * FROM Paints WHERE id=?;");
             p.setObject(1, id);
             ResultSet r = p.executeQuery();
-            String json = convertToJSON(r).toString(3);
+            String json = convertPaintToJSONObj(r).toString(3);
             return json;
         }
         catch (SQLException e) {
@@ -54,9 +54,9 @@ public class Database {
      */
     public static String getAllPaints() {
         try (Connection con = ds.getConnection()) {
-            PreparedStatement p = con.prepareStatement("SELECT (name, id) FROM Paints;");
+            PreparedStatement p = con.prepareStatement("SELECT name, id, imgURL FROM Paints;");
             ResultSet r = p.executeQuery();
-            String json = convertToJSON(r).toString(3);
+            String json = convertToJSONArray(r).toString(3);
             return json;
         }
         catch (SQLException e) {
@@ -67,18 +67,51 @@ public class Database {
         }
         return "";
     }
+    public static int getPaintDryTime(UUID id) {
+        try (Connection con = ds.getConnection()) {
+            PreparedStatement p = con.prepareStatement("SELECT surfacedry FROM Paints WHERE id=?;");
+            p.setObject(1, id);
+            ResultSet r = p.executeQuery();
+            if (r.next())
+                return r.getInt(1);
+            else {
+                throw new RuntimeException("paint not found in database");
+            }
+        }
+        catch (SQLException e) {
+            //maybe not the best option
+            e.printStackTrace();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return -1; // error
+    }
     //credit: https://stackoverflow.com/questions/36562487/resultset-to-json-using-gson
-    public static JSONArray convertToJSON(ResultSet resultSet)
+    private static JSONArray convertToJSONArray(ResultSet resultSet)
             throws Exception {
         JSONArray jsonArray = new JSONArray();
         while (resultSet.next()) {
             int total_columns = resultSet.getMetaData().getColumnCount();
             JSONObject obj = new JSONObject();
+
             for (int i = 0; i < total_columns; i++) {
                 obj.put(resultSet.getMetaData().getColumnLabel(i + 1).toLowerCase(), resultSet.getObject(i + 1));
             }
             jsonArray.put(obj);
         }
         return jsonArray;
+    }
+
+    private static JSONObject convertPaintToJSONObj(ResultSet resultSet)
+            throws Exception {
+        if (resultSet.next()) {
+            int total_columns = resultSet.getMetaData().getColumnCount();
+            JSONObject obj = new JSONObject();
+            for (int i = 0; i < total_columns; i++) {
+                obj.put(resultSet.getMetaData().getColumnLabel(i + 1).toLowerCase(), resultSet.getObject(i + 1));
+            }
+            return obj;
+        }
+        return null;
     }
 }
