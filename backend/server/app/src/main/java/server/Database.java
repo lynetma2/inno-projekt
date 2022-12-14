@@ -87,7 +87,7 @@ public class Database {
         return -1; // error
     }
     //credit: https://stackoverflow.com/questions/36562487/resultset-to-json-using-gson
-    public static JSONArray convertToJSONArray(ResultSet resultSet)
+    private static JSONArray convertToJSONArray(ResultSet resultSet)
             throws Exception {
         JSONArray jsonArray = new JSONArray();
         while (resultSet.next()) {
@@ -102,7 +102,7 @@ public class Database {
         return jsonArray;
     }
 
-    public static JSONObject convertPaintToJSONObj(ResultSet resultSet)
+    private static JSONObject convertPaintToJSONObj(ResultSet resultSet)
             throws Exception {
         if (resultSet.next()) {
             int total_columns = resultSet.getMetaData().getColumnCount();
