@@ -67,6 +67,25 @@ public class Database {
         }
         return "";
     }
+    public static int getPaintDryTime(UUID id) {
+        try (Connection con = ds.getConnection()) {
+            PreparedStatement p = con.prepareStatement("SELECT surfacedry FROM Paints WHERE id=?;");
+            p.setObject(1, id);
+            ResultSet r = p.executeQuery();
+            if (r.next())
+                return r.getInt(1);
+            else {
+                throw new RuntimeException("paint not found in database");
+            }
+        }
+        catch (SQLException e) {
+            //maybe not the best option
+            e.printStackTrace();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return -1; // error
+    }
     //credit: https://stackoverflow.com/questions/36562487/resultset-to-json-using-gson
     public static JSONArray convertToJSONArray(ResultSet resultSet)
             throws Exception {

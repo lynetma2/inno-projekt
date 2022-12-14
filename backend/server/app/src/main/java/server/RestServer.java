@@ -6,10 +6,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -56,6 +53,13 @@ public class RestServer {
         return CompletableFuture
                 .completedFuture(Database.getPaint(UUID.fromString(uuid)));
     }
-
-
+    @GetMapping("/forecast/{uuid}")
+    @Async
+    public CompletableFuture<String> getForecast(@PathVariable String uuid, @RequestParam double longitude
+            , @RequestParam double latitude) {
+        // SELECT * FROM Paints WHERE id=UUID;
+        System.out.println(longitude);
+        return CompletableFuture
+                .completedFuture(Forecast.getForecast(longitude, latitude));
+    }
 }
