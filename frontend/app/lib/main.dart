@@ -43,10 +43,10 @@ class _MyHomePageState extends State<MyHomePage> {
   bool searching = false;
 
   Future<Map<String, String>> fetchPaintNames() async {
-    final response = await http.get(Uri.parse('https://jsonplaceholder.typicode.com/albums/1'));
+    final response = await http.get(Uri.parse('http://129.151.215.162:8080/api/paints'));
 
     if (response.statusCode == 200) {
-      List<dynamic> jsonResponse = jsonDecode(PAINTS); //TODO update this
+      List<dynamic> jsonResponse = jsonDecode(response.body);
       List<PaintProductLight> paints = jsonResponse.map((e) => PaintProductLight.fromJson(e)).toList();
 
       Map<String, String> data = {};
@@ -77,15 +77,21 @@ class _MyHomePageState extends State<MyHomePage> {
     Map<String, String> paintNames = await fetchPaintNames();
     var matches = recognizedText.text.toString().bestMatch(paintNames.keys.toList());
     debugPrint(matches.toString());
-    //if (matches.bestMatch.rating! >= 0.2) {
+    if (matches.bestMatch.rating! >= 0.2) {
       setState(() {
         searching = false;
       });
-      //_switchPage(paintNames[matches.bestMatch.target]!);
-        _switchPage("testID");
-    //} else {
+      _switchPage(paintNames[matches.bestMatch.target]!);
+    } else {
       //TODO create error and allow manual search
-    //}
+      setState(() {
+        searching = false;
+      });
+      const snackBar = SnackBar(
+        content: Text('Intet match - ukendt maling!'),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
   }
 
   void _switchPage(String id) {

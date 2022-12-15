@@ -22,14 +22,16 @@ class _ResultPageState extends State<ResultPage> {
 
   Future<PaintProduct> fetchPaint(String id) async {
     //TODO update the URL
+    debugPrint("id: $id");
     final response = await http
-        .get(Uri.parse('https://jsonplaceholder.typicode.com/albums/1'));
+        .get(Uri.parse('http://129.151.215.162:8080/api/paint/$id'));
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
       // then parse the JSON.
       //TODO change this to the actual data
-      return PaintProduct.fromTestData();
+      debugPrint(response.body);
+      return PaintProduct.fromJson(jsonDecode(response.body));
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.
@@ -40,10 +42,10 @@ class _ResultPageState extends State<ResultPage> {
   Future<List<DateInfo>> fetchDates(String id, double latitude, double longitude) async {
     //TODO update the URL
     final response = await http
-        .get(Uri.parse('https://jsonplaceholder.typicode.com/albums/2'));
+        .get(Uri.parse('http://129.151.215.162:8080/api/forecast/$id?longitude=$longitude&latitude=$latitude'));
     
     if (response.statusCode == 200) {
-      List<dynamic> jsonResponse = jsonDecode(JUDGEMENT); //TODO update this
+      List<dynamic> jsonResponse = jsonDecode(response.body); //TODO update this
       debugPrint("JSON is not parsed yet");
       List<DateInfo> dates = jsonResponse.map((e) => DateInfo.fromJson(e)).toList();
       debugPrint("JSON is successfully parsed");
@@ -59,7 +61,7 @@ class _ResultPageState extends State<ResultPage> {
     super.initState();
     futurePaintProduct = fetchPaint(widget.id);
     //TODO update the coordinates
-    futureDateInfos = fetchDates(widget.id, 10.402931, 55.372364);
+    futureDateInfos = fetchDates(widget.id, -33.865743, 150.947670);
   }
 
   @override
@@ -186,11 +188,11 @@ Widget dateWidget(DateInfo date, int index,
     child: ExpansionTile(
         title: Text("${DateFormat("EEEE").format(DateTime.parse(date.time))}"),
         subtitle: //TODO vent på map fra kasper om tildelingen
-            const Text("Fint at male nu"),
+            Text(date.textReasoning!),
         trailing: Wrap(
           spacing: 12, // space between two icons
           children: <Widget>[
-            const Icon(Icons.check_circle_outline, color: Colors.green,), // icon-1 TODO do something here again with the map
+            date.icon!, // icon-1 TODO do something here again with the map
             Icon(date.expanded
                 ? Icons.arrow_drop_up
                 : Icons.arrow_drop_down), // icon-2
@@ -281,7 +283,7 @@ Widget humidityWidget(DateInfo data) {
                   style: const TextStyle(fontSize: 18),
                 ),
                 //TODO do something about the map here again
-                const Icon(Icons.sunny)
+                data.datapoints[index - 1].icon!
               ],
             ),
           );
@@ -299,12 +301,22 @@ class DateInfo {
   int judgement;
   List<DataPoint> datapoints;
   bool expanded = false;
+  Icon? icon;
+  String? textReasoning;
 
-  DateInfo(this.time, this.judgement, this.datapoints);
+  DateInfo(this.time, this.judgement, this.datapoints) {
+    if (judgement == 1) {
+      icon = Icon(Icons.check_circle_outline, color: Colors.green,);
+      textReasoning = "Det er fint at male i dag";
+    } else {
+      icon = Icon(Icons.close_outlined, color: Colors.red,);
+      textReasoning = "Det er ikke optimalt at male i dag";
+    }
+  }
 
   factory DateInfo.fromJson(Map<String, dynamic> json) {
     List<DataPoint> datapoints = (json['dataPoints'] as List).map((e) => DataPoint.fromJson(e)).toList();
-    return DateInfo(json['time'].toString(), 1, datapoints);
+    return DateInfo(json['time'].toString(), json['judgement'], datapoints);
   }
 
   factory DateInfo.fromTestData() {
@@ -317,13 +329,22 @@ class DataPoint {
   final String time;
   final double humidity;
   final double temp;
-  final int icon;
+  final int iconCode;
+  Icon? icon;
 
-  DataPoint(this.time, this.humidity, this.temp, this.icon);
+  DataPoint(this.time, this.humidity, this.temp, this.iconCode) {
+    if (iconCode == 0) {
+      icon = Icon(Icons.water_drop);
+    } else if (iconCode == 1) {
+      icon = Icon(Icons.cloud);
+    } else if (iconCode == 2) {
+      icon = Icon(Icons.sunny);
+    } else {
+      icon = Icon(Icons.question_mark);
+    }
+  }
 
-  DataPoint.fromJson(Map<String, dynamic> json)
-    : time = json['time'],
-      humidity = json['rf'],
-      temp = json['temperature'].toDouble(),
-      icon = json['icon'];
+  factory DataPoint.fromJson(Map<String, dynamic> json) {
+    return DataPoint(json['time'], json['rf'], json['temperature'].toDouble(), json['icon']);
+  }
 }
