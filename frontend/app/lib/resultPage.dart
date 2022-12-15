@@ -92,20 +92,25 @@ class _ResultPageState extends State<ResultPage> {
                 if (snapshot.hasData) {
                   //Build the normal widget
                   return Card(
-                    child: ListView.separated(
-                      physics: const NeverScrollableScrollPhysics(),
-                      padding: const EdgeInsets.all(8),
-                      itemCount: snapshot.data!.length,
-                      shrinkWrap: true,
-                      itemBuilder: (BuildContext context, int index) {
-                        return dateWidget(snapshot.data![index], index,
-                                (bool expanded) {
-                              setState(() => snapshot.data![index].expanded = expanded);
-                            }, context);
-                      },
-                      separatorBuilder: (context, index) {
-                        return const Divider();
-                      },
+                    child: Column(
+                      children: [
+                        ListView.separated(
+                          physics: const NeverScrollableScrollPhysics(),
+                          padding: const EdgeInsets.all(8),
+                          itemCount: snapshot.data!.length,
+                          shrinkWrap: true,
+                          itemBuilder: (BuildContext context, int index) {
+                            return dateWidget(snapshot.data![index], index,
+                                    (bool expanded) {
+                                  setState(() => snapshot.data![index].expanded = expanded);
+                                }, context);
+                          },
+                          separatorBuilder: (context, index) {
+                            return const Divider();
+                          },
+                        ),
+                        Text("Data fra MET Norge")
+                      ],
                     ),
                   );
                 } else if (snapshot.hasError) {
@@ -186,7 +191,7 @@ Widget dateWidget(DateInfo date, int index,
   return Theme(
     data: theme,
     child: ExpansionTile(
-        title: Text("${DateFormat("EEEE").format(DateTime.parse(date.time))}"),
+        title: Text("${DateFormat("MMMMEEEEd").format(DateTime.parse(date.time))}"),
         subtitle: //TODO vent på map fra kasper om tildelingen
             Text(date.textReasoning!),
         trailing: Wrap(
