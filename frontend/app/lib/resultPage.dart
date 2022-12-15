@@ -296,7 +296,7 @@ Widget humidityWidget(DateInfo data) {
 class DateInfo {
   String time;
   int judgement;
-  List<RelativeHumidity> datapoints;
+  List<DataPoint> datapoints;
   bool expanded = false;
 
   DateInfo(this.time, this.judgement, this.datapoints);
@@ -304,23 +304,26 @@ class DateInfo {
   DateInfo.fromJson(Map<String, dynamic> json)
     : time = json['time'],
       judgement = json['judgement'],
-      datapoints = (json['datapoints'] as List).map((e) => RelativeHumidity.fromJson(e)).toList();
+      datapoints = (json['datapoints'] as List).map((e) => DataPoint.fromJson(e)).toList();
 
   factory DateInfo.fromTestData() {
-    Map<String, dynamic> dateInfoMap = jsonDecode('{"time":"2022-12-13T12:00:00Z","judgement":1,"datapoints":[{"rf":0.65,"time":"2022-12-13T12:00:00Z","temperatur":22.3,"icon":1},{"rf":0.75,"time":"2022-12-13T14:00:00Z","temperatur":21.3,"icon":1},{"rf":0.55,"time":"2022-12-13T16:00:00Z","temperatur":20.3,"icon":2}]}');
+    Map<String, dynamic> dateInfoMap = jsonDecode('{"time":"2022-12-13T12:00:00Z","judgement":1,"datapoints":'
+        '[{"rf":0.65,"time":"2022-12-13T12:00:00Z","temperatur":22.3,"icon":1},'
+        '{"rf":0.75,"time":"2022-12-13T14:00:00Z","temperatur":21.3,"icon":1},'
+        '{"rf":0.55,"time":"2022-12-13T16:00:00Z","temperatur":20.3,"icon":2}]}');
     return DateInfo.fromJson(dateInfoMap);
   }
 }
 
-class RelativeHumidity {
+class DataPoint {
   final String time;
   final double humidity;
   final double temp;
   final int icon;
 
-  RelativeHumidity(this.time, this.humidity, this.temp, this.icon);
+  DataPoint(this.time, this.humidity, this.temp, this.icon);
 
-  RelativeHumidity.fromJson(Map<String, dynamic> json)
+  DataPoint.fromJson(Map<String, dynamic> json)
     : time = json['time'],
       humidity = json['rf'],
       temp = json['temperatur'],
