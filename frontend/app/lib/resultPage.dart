@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:app/exampleData.dart';
 import 'main.dart';
 
 class ResultPage extends StatefulWidget {
@@ -42,12 +42,24 @@ class _ResultPageState extends State<ResultPage> {
         .get(Uri.parse('https://jsonplaceholder.typicode.com/albums/2'));
     
     if (response.statusCode == 200) {
-      debugPrint("No error");
-      return [
-        DateInfo.fromTestData(),
-        DateInfo.fromTestData(),
-        DateInfo.fromTestData()
-      ];
+      List<dynamic> jsonResponse = jsonDecode(NYJUDGEMENT); //TODO update this
+      debugPrint("JSON is not parsed yet");
+      //List<DateInfo> dates = [DateInfo.fromJson(jsonResponse[0])];
+      List<DateInfo> dates = [];
+      debugPrint(jsonResponse.length.toString());
+      for (int i = 0; i < jsonResponse.length - 1; i++) {
+        //dates.add(DateInfo.fromJson(jsonResponse[i]));
+        debugPrint("number $i is parsed");
+        List<DataPoint> dataPoints = [];
+        for (int j = 0; j < 4; j++) {
+          dataPoints.add(DataPoint.fromJson(jsonResponse[i]['dataPoints'][j]));
+          debugPrint("number $j child is parsed");
+        }
+      }
+
+      debugPrint("JSON is successfully parsed");
+
+      return dates;
     } else {
       throw Exception('Failed to load dateinfo');
     }
@@ -304,13 +316,10 @@ class DateInfo {
   DateInfo.fromJson(Map<String, dynamic> json)
     : time = json['time'],
       judgement = json['judgement'],
-      datapoints = (json['datapoints'] as List).map((e) => DataPoint.fromJson(e)).toList();
+      datapoints = json['dataPoints'].map((e) => DataPoint.fromJson(e));
 
   factory DateInfo.fromTestData() {
-    Map<String, dynamic> dateInfoMap = jsonDecode('{"time":"2022-12-13T12:00:00Z","judgement":1,"datapoints":'
-        '[{"rf":0.65,"time":"2022-12-13T12:00:00Z","temperatur":22.3,"icon":1},'
-        '{"rf":0.75,"time":"2022-12-13T14:00:00Z","temperatur":21.3,"icon":1},'
-        '{"rf":0.55,"time":"2022-12-13T16:00:00Z","temperatur":20.3,"icon":2}]}');
+    Map<String, dynamic> dateInfoMap = jsonDecode('{"judgement":0,"dataPoints":[{"rf":0.845,"temperature":26.5,"icon":2,"time":"2022-12-14T02:00:00Z"},{"rf":0.838,"temperature":26.6,"icon":2,"time":"2022-12-14T03:00:00Z"},{"rf":0.8270000000000001,"temperature":26.8,"icon":2,"time":"2022-12-14T04:00:00Z"},{"rf":0.8190000000000001,"temperature":26.9,"icon":2,"time":"2022-12-14T05:00:00Z"},{"rf":0.813,"temperature":27,"icon":2,"time":"2022-12-14T06:00:00Z"},{"rf":0.8170000000000001,"temperature":27,"icon":2,"time":"2022-12-14T07:00:00Z"},{"rf":0.8059999999999999,"temperature":27.2,"icon":2,"time":"2022-12-14T08:00:00Z"},{"rf":0.802,"temperature":27.3,"icon":2,"time":"2022-12-14T09:00:00Z"},{"rf":0.792,"temperature":27.5,"icon":2,"time":"2022-12-14T10:00:00Z"},{"rf":0.7829999999999999,"temperature":27.6,"icon":2,"time":"2022-12-14T11:00:00Z"},{"rf":0.764,"temperature":27.7,"icon":0,"time":"2022-12-14T12:00:00Z"},{"rf":0.746,"temperature":27.9,"icon":2,"time":"2022-12-14T13:00:00Z"},{"rf":0.745,"temperature":28,"icon":0,"time":"2022-12-14T14:00:00Z"},{"rf":0.733,"temperature":27.9,"icon":0,"time":"2022-12-14T15:00:00Z"},{"rf":0.723,"temperature":27.8,"icon":2,"time":"2022-12-14T16:00:00Z"},{"rf":0.738,"temperature":27.8,"icon":2,"time":"2022-12-14T17:00:00Z"},{"rf":0.741,"temperature":27.8,"icon":2,"time":"2022-12-14T18:00:00Z"},{"rf":0.7559999999999999,"temperature":27.7,"icon":2,"time":"2022-12-14T19:00:00Z"},{"rf":0.759,"temperature":27.6,"icon":2,"time":"2022-12-14T20:00:00Z"},{"rf":0.754,"temperature":27.6,"icon":2,"time":"2022-12-14T21:00:00Z"},{"rf":0.754,"temperature":27.7,"icon":2,"time":"2022-12-14T22:00:00Z"},{"rf":0.7490000000000001,"temperature":27.8,"icon":2,"time":"2022-12-14T23:00:00Z"}],"time":"2022-12-14T02:00Z"}');
     return DateInfo.fromJson(dateInfoMap);
   }
 }
@@ -326,6 +335,6 @@ class DataPoint {
   DataPoint.fromJson(Map<String, dynamic> json)
     : time = json['time'],
       humidity = json['rf'],
-      temp = json['temperatur'],
+      temp = json['temperature'],
       icon = json['icon'];
 }

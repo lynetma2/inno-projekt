@@ -7,6 +7,7 @@ import 'package:google_mlkit_commons/google_mlkit_commons.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:string_similarity/string_similarity.dart';
+import 'package:app/exampleData.dart';
 
 void main() {
   runApp(const MyApp());
@@ -45,17 +46,15 @@ class _MyHomePageState extends State<MyHomePage> {
     final response = await http.get(Uri.parse('https://jsonplaceholder.typicode.com/albums/1'));
 
     if (response.statusCode == 200) {
-      //TODO make the parser
+      List<dynamic> jsonResponse = jsonDecode(PAINTS); //TODO update this
+      List<PaintProductLight> paints = jsonResponse.map((e) => PaintProductLight.fromJson(e)).toList();
 
-      //for now example data
-      Map<String, String> testData = {
-        'Flügger Indendørs Farveprøve': '6ff3cd36-16f5-4997-a683-15c8c9adf149',
-        'Flügger 01 Wood Tex Classic - Grundingsolie' : 'b6e8e4a0-32ca-40e6-a917-dacdba4c8385',
-        'Flügger Wood Oil - Vandig træolie' : '8db6918e-470d-47f6-bd8e-c7e86654c62c',
-        'Flügger 07 Wood Tex Mat - Træbeskyttelse' : '9d02937f-998e-4073-bf9f-3677bff8ba8b',
-        'Flügger Facade Beton - Betonmaling' : '976baf17-0418-44df-a3ef-5e2846e223c6',
-      };
-      return testData;
+      Map<String, String> data = {};
+      for (int i = 0; i < paints.length; i++) {
+        data[paints[i].name] = paints[i].id;
+      }
+
+      return data;
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.
@@ -151,6 +150,24 @@ Widget _productWidget(PaintProduct paint) {
     );
 }
 
+class PaintProductLight {
+  final String id;
+  final String name;
+  final String imgurl;
+
+  PaintProductLight(this.id, this.name, this.imgurl);
+
+  PaintProductLight.fromJson(Map<String, dynamic> json)
+    : id = json['id'],
+      name = json['name'],
+      imgurl = json['imgurl'];
+  
+  factory PaintProductLight.fromTestData() {
+    Map<String, dynamic> paintMap = jsonDecode('{"imgurl": "https://assets.flugger.dk/static/ir/107720/32188_Colour%20Sample_01_0,38L_FARVEPR.png?width=500&quality=80&format=webp&rmode=Pad","name": "Flügger Indendørs Farveprøve","id": "d857656f-628c-4ecf-9c54-8be1310b5ed1"}');
+    return PaintProductLight.fromJson(paintMap);
+  }
+}
+
 class PaintProduct {
   final String id;
   final int productid;
@@ -174,7 +191,7 @@ class PaintProduct {
         url = json['url'];
   
   factory PaintProduct.fromTestData() {
-    Map<String, dynamic> paintMap = jsonDecode('{ "surfacedry": 1, "imgurl": "https://assets.flugger.dk/static/ir/107720/32188_Colour%20Sample_01_0,38L_FARVEPR.png?width=500&quality=80&format=webp&rmode=Pad", "productid": 13218, "curingtime": 672, "name": "Flügger Indendørs Farveprøve", "recoatdry": 6, "id": "6ff3cd36-16f5-4997-a683-15c8c9adf149", "url": "https://www.flugger.dk/indendoers/loftmaling/farveproeve/p-FARVEPR/" }');
+    Map<String, dynamic> paintMap = jsonDecode(PAINT);
     return PaintProduct.fromJson(paintMap);
   }
 }
