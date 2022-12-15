@@ -16,7 +16,7 @@ public class Database {
     static {
         // from https://github.com/brettwooldridge/HikariCP#rocket-initialization
         HikariConfig config = new HikariConfig();
-        config.setJdbcUrl("jdbc:postgresql://localhost:5432/");
+        config.setJdbcUrl("jdbc:postgresql://database:5432/");
         config.setUsername("postgres");
         config.setPassword(System.getenv("POSTGRES_PASSWORD"));
         config.addDataSourceProperty("cachePrepStmts", "true");

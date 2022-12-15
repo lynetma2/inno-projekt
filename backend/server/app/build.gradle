@@ -18,7 +18,8 @@ repositories {
     mavenCentral()
 }
 
-sourceCompatibility = '17'
+//sourceCompatibility = JavaVersion.VERSION_12
+//targetCompatibility = JavaVersion.VERSION_12
 
 dependencies {
     // Use JUnit Jupiter for testing.

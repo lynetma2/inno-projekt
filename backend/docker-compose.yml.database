@@ -1,13 +1,4 @@
 services:
-    server:
-        build: ./server
-        ports:
-            - "8080:8080" # map server:8080 to host:8080 
-        depends_on:
-            database:
-                condition: service_healthy #TODO implement healthcheck
-            scraper:
-                condition: service_completed_successfully
     database:
         build: ./db
         ports:
@@ -15,7 +6,7 @@ services:
         user: postgres
         healthcheck:
           test: ["CMD-SHELL", "pg_isready", "-U postgres"]
-          interval: 5s
+          interval: 10s
           timeout: 5s
           retries: 5
     scraper:
