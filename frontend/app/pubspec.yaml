@@ -42,6 +42,7 @@ dependencies:
   url_launcher: ^6.1.7
   http: ^0.13.5
   string_similarity: ^2.0.0
+  intl: ^0.18.0
 
 
 dev_dependencies:
