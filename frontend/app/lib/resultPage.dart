@@ -21,7 +21,6 @@ class _ResultPageState extends State<ResultPage> {
   late Future<List<DateInfo>> futureDateInfos;
 
   Future<PaintProduct> fetchPaint(String id) async {
-    //TODO update the URL
     debugPrint("id: $id");
     final response = await http
         .get(Uri.parse('http://129.151.215.162:8080/api/paint/$id'));
@@ -29,7 +28,6 @@ class _ResultPageState extends State<ResultPage> {
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
       // then parse the JSON.
-      //TODO change this to the actual data
       debugPrint(response.body);
       return PaintProduct.fromJson(jsonDecode(response.body));
     } else {
@@ -40,12 +38,11 @@ class _ResultPageState extends State<ResultPage> {
   }
   
   Future<List<DateInfo>> fetchDates(String id, double latitude, double longitude) async {
-    //TODO update the URL
     final response = await http
         .get(Uri.parse('http://129.151.215.162:8080/api/forecast/$id?longitude=$longitude&latitude=$latitude'));
     
     if (response.statusCode == 200) {
-      List<dynamic> jsonResponse = jsonDecode(response.body); //TODO update this
+      List<dynamic> jsonResponse = jsonDecode(response.body);
       debugPrint("JSON is not parsed yet");
       List<DateInfo> dates = jsonResponse.map((e) => DateInfo.fromJson(e)).toList();
       debugPrint("JSON is successfully parsed");
@@ -60,7 +57,6 @@ class _ResultPageState extends State<ResultPage> {
   void initState() {
     super.initState();
     futurePaintProduct = fetchPaint(widget.id);
-    //TODO update the coordinates
     futureDateInfos = fetchDates(widget.id, -33.865743, 150.947670);
   }
 
@@ -192,12 +188,12 @@ Widget dateWidget(DateInfo date, int index,
     data: theme,
     child: ExpansionTile(
         title: Text("${DateFormat("MMMMEEEEd").format(DateTime.parse(date.time))}"),
-        subtitle: //TODO vent på map fra kasper om tildelingen
+        subtitle:
             Text(date.textReasoning!),
         trailing: Wrap(
           spacing: 12, // space between two icons
           children: <Widget>[
-            date.icon!, // icon-1 TODO do something here again with the map
+            date.icon!, // icon-1
             Icon(date.expanded
                 ? Icons.arrow_drop_up
                 : Icons.arrow_drop_down), // icon-2
@@ -287,7 +283,6 @@ Widget humidityWidget(DateInfo data) {
                   "${DateFormat("Hm").format(DateTime.parse(data.datapoints[index -1].time))}",
                   style: const TextStyle(fontSize: 18),
                 ),
-                //TODO do something about the map here again
                 data.datapoints[index - 1].icon!
               ],
             ),

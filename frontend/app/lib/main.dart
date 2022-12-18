@@ -73,7 +73,6 @@ class _MyHomePageState extends State<MyHomePage> {
     final textRecognizer = TextRecognizer(script: TextRecognitionScript.latin);
     final RecognizedText recognizedText = await textRecognizer.processImage(inputImage);
     debugPrint(recognizedText.text);
-    //TODO check which product it should show on next page
     Map<String, String> paintNames = await fetchPaintNames();
     var matches = recognizedText.text.toString().bestMatch(paintNames.keys.toList());
     debugPrint(matches.toString());
@@ -83,7 +82,6 @@ class _MyHomePageState extends State<MyHomePage> {
       });
       _switchPage(paintNames[matches.bestMatch.target]!);
     } else {
-      //TODO create error and allow manual search
       setState(() {
         searching = false;
       });
